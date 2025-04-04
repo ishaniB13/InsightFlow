@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(210deg, #f9f9f9, #c7ced8, #98a4b6, #6b7b94, #405371, #f9f9fa);
+            height: 100vh;
+        }
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            margin: 30px auto;
+            padding: 0 45px;
+            max-width: 87%;
+            max-height: 60px;
+            height: 60px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: left;
+            text-decoration: none;
+            margin-left: 0px;
+            margin-right: 5px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            list-style: none;
+        }
+
+        .navbar-nav .nav-item {
+            margin: 0 10px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #11223d;
+            font-size: 16px;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #1b4775;
+        }
+
+        .navbar-brand .brand-name {
+                color: #11223d;
+                margin: 8px 0;
+            }
+        @media (max-width: 992px) {
+            .body {
+                height: 100vh;
+            }
+            .navbar {
+                max-width: 90%;
+                background: transparent !important;
+                padding: 0 25px;
+                border: none;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 10px;
+                padding-bottom: 20px;
+            }
+
+            .navbar-brand .brand-name {
+                color: #11223d;
+                font-size: 12px;
+                margin: 8px 0;
+            }
+
+            .navbar-nav .nav-item {
+                margin: 8px 0;
+            }
+
+            
+            .form-container {
+            background: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 450px;
+            margin: 50px auto;
+        }
+        }
+
+
+        .form-container {
+            background: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        .register h2 {
+            color: #11223d;
+        }
+        .btn-primary {
+            background-color: #11223d;
+            border-color: #193664;
+        }
+        .btn-primary:hover {
+            background-color: #193664;
+            border-color: #193664;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Brand Logo" height="40">
+                <span class="brand-name fw-bold">InsightFlow</span>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Form -->
+    <div class="register container form-container">
+        <h2 class="text-center fw-bold mb-4">Create Your Account</h2>
+        <form action="/register" method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="John" required>
+            </div>
+            <div class="mb-3">
+                <label for="surname" class="form-label">Surname:</label>
+                <input type="text" class="form-control" name="surname" id="surname" placeholder="Doe" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email ID:</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Enter your Email-ID" required>
+            </div>
+            <div class="mb-3">
+                <label for="profession" class="form-label">Profession:</label>
+                <input type="text" class="form-control" name="profession" id="profession" placeholder="Enter your profession" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-3">Register</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+name: Send Newsletters
+
+on:
+  workflow_dispatch: # Enables manual trigger
+  schedule:
+    - cron: "0 0 * * *" # Runs at midnight UTC every day
+    
+jobs:
+  run-scheduler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+    
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+    
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+    
+      - name: Debug Environment Variables
+        env:
+          FIREBASE_KEY: ${{ secrets.FIREBASE_KEY }}
+          FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+        run: |
+          echo "FIREBASE_DB_URL: $FIREBASE_DB_URL"
+          echo "FIREBASE_KEY: $FIREBASE_KEY"
+    
+      - name: Run Scheduler
+        env:
+          FIREBASE_KEY: ${{ secrets.FIREBASE_KEY }}
+          FIREBASE_DB_URL: ${{ secrets.FIREBASE_DB_URL }}
+        run: |
+          python schedular.py

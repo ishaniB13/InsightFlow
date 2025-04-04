@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(210deg, #f9f9f9, #c7ced8, #98a4b6, #6b7b94, #405371, #f9f9fa);
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            height: 120vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .questionnaire-container {
+            background-color: #ffffff;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #11223d;
+;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background-color: #11223d;
+            border-color: #11223d;
+        }
+
+        .btn-primary:hover {
+            background-color: #25406b;
+            border-color: #25406b;
+        }
+
+        .info-icon {
+            color: #25406b;
+            cursor: pointer;
+            margin-left: 5px;
+            position: relative;
+        }
+
+        .tooltip-box {
+            position: absolute;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-weight: lighter;
+            font-size: 0.9rem;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            display: none;
+            word-wrap: break-word; /* Ensures content wraps */
+            max-width: 300px; /* Optional max width for tooltip */
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .info-icon:hover + .tooltip-box,
+        .info-icon.active + .tooltip-box {
+            display: block;
+        }
+
+        @media (max-width: 992px) {
+            .tooltip-box {
+                position: absolute;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 7px 12px;
+            font-weight: lighter;
+            font-size: 0.9rem;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            display: none;
+            word-wrap: break-word; /* Ensures content wraps */
+            max-width: 200px; /* Optional max width for tooltip */
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="questionnaire-container">
+            <!-- Questionnaire Header -->
+            <h1>Questionnaire for {{ user[1] }} {{ user[2] }}</h1>
+
+            <!-- Questionnaire Form -->
+            <form action="{{ url_for('questionnaire', email=user[3]) }}" method="POST">
+                <!-- Research Interest -->
+                <div class="form-group">
+                    <label for="research_interest">Research Interest Topic:</label>
+                    <input type="text" class="form-control" id="research_interest" name="research_interest" placeholder="Enter your interested research topic" required>
+                </div>
+
+                <!-- User Level -->
+                <div class="form-group position-relative">
+                    <label for="user_level">User Level:
+                        <i class="info-icon bi bi-info-circle"></i>
+                        <span class="tooltip-box">
+                            Describe your expertise or knowledge about the research topic.
+                        </span>
+                    </label>
+                    <select class="form-control" id="user_level" name="user_level" required>
+                        <option value="" disabled selected>Select your user level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Expert">Expert</option>
+                    </select>
+                </div>
+
+                <!-- Summary Preference -->
+                <div class="form-group position-relative">
+                    <label for="summary_preference">Summary Content Preference:
+                        <i class="info-icon bi bi-info-circle"></i>
+                        <span class="tooltip-box">
+                            Specify everything you want to include in your research paper based summaries, e.g., share the pros and cons, list the technologies used in the paper, translate everything in german.
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" id="summary_preference" name="summary_preference" placeholder="E.g., brief overview, technical details" required>
+                </div>
+
+                <!-- Toggle for Translate Summary -->
+                <div class="form-group mt-3">
+                    <label for="translate_summary">Translate Summary (Default is English):</label>
+                    <select class="form-control" id="translate_summary" name="translate_summary" onchange="toggleLanguageDropdown()">
+                        <option value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
+                </div>
+                
+                <!-- Dropdown for language selection (hidden by default) -->
+                <div class="form-group mt-3 d-none" id="language_preference">
+                    <label for="language">Select Language:</label>
+                    <select class="form-control" id="language" name="language_preference">
+                        <option value="de">Deutsch</option>
+                        <option value="es">Español</option>
+                        <option value="fr">Français</option>
+                        <option value="pt">Português</option>
+                    </select>
+                </div>
+                
+                <!-- JavaScript to toggle the language dropdown -->
+                <script>
+                    function toggleLanguageDropdown() {
+                        const translateDropdown = document.getElementById('translate_summary');
+                        const languageDropdown = document.getElementById('language_preference');
+                        
+                        if (translateDropdown.value === 'yes') {
+                            languageDropdown.classList.remove('d-none'); // Show the dropdown
+                            languageDropdown.querySelector('select').disabled = false; // Enable the dropdown
+                        } else {
+                            languageDropdown.classList.add('d-none'); // Hide the dropdown
+                            languageDropdown.querySelector('select').disabled = true; // Disable the dropdown
+                        }
+                    }
+                </script>
+                
+                <!-- Newsletter Frequency -->
+                <div class="form-group">
+                    <label for="newsletter_frequency">Newsletter Frequency:</label>
+                    <select class="form-control" id="newsletter_frequency" name="newsletter_frequency" required>
+                        <option value="monthly">Monthly</option>
+                        <option value="biweekly">Biweekly</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+            $(document).ready(function () {
+            // Initialize tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Fade out loader after page load
+            $(".loader-cont").fadeOut("slow");
+        });
+    </script>
+</body>
+</html>
